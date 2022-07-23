@@ -1,0 +1,217 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet id="001" author="Mikhail">
+        <createTable tableName="user_file">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_file"/>
+            </column>
+            <column name="file_id" type="VARCHAR(255)"/>
+            <column name="mime_type" type="VARCHAR(255)"/>
+            <column name="original_file_name" type="VARCHAR(255)"/>
+            <column name="size" type="BIGINT"/>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="university">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_university"/>
+            </column>
+            <column name="university_name" type="VARCHAR(255)"/>
+            <column name="university_code" type="VARCHAR(255)"/>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="university_year">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_university_year"/>
+            </column>
+            <column name="year" type="BIGINT"/>
+            <column name="university_id" type="BIGINT">
+                <constraints foreignKeyName="fk_university_year"
+                             referencedTableName="university"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="academy_group">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_academy_group"/>
+            </column>
+            <column name="group_name" type="VARCHAR(255)"/>
+            <column name="university_year_id" type="BIGINT">
+                <constraints foreignKeyName="fk_academy_group_university_year"
+                             referencedTableName="university_year"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="course">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_course"/>
+            </column>
+            <column name="course_name" type="VARCHAR(255)"/>
+            <column name="course_code" type="VARCHAR(255)"/>
+            <column name="university_id" type="BIGINT">
+                <constraints foreignKeyName="fk_university_course"
+                             referencedTableName="university"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="practice_work">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_practice_work"/>
+            </column>
+            <column name="course_id" type="BIGINT">
+                <constraints foreignKeyName="fk_course_practice_work"
+                             referencedTableName="course"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="skill">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_skill"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="confirm_code">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_confirm_code"/>
+            </column>
+            <column name="code" type="VARCHAR(255)"/>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+
+
+
+        <createTable tableName="account">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_account"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_client_email"/>
+            </column>
+            <column name="hash_password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="telegram" type="VARCHAR(255)"/>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="experience_desc" type="VARCHAR(5100)"/>
+            <column name="portfolio_links" type="VARCHAR(5100)"/>
+            <column name="birth_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="deleted" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="role" type="VARCHAR(255)" defaultValueBoolean="false"/>
+            <column name="academy_group_id" type="BIGINT">
+                <constraints foreignKeyName="fk_account_academy_group" references="academy_group(id)"/>
+            </column>
+            <column name="confirm_code_id" type="BIGINT">
+                <constraints foreignKeyName="fk_account_confirm_code" references="confirm_code(id)"/>
+            </column>
+            <column name="avatar_id" type="BIGINT">
+                <constraints foreignKeyName="fk_account_avatar" references="user_file(id)"/>
+            </column>
+
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+        <createTable tableName="resume">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_resume"/>
+            </column>
+            <column name="account_id" type="BIGINT">
+                <constraints foreignKeyName="fk_resume_account"
+                             referencedTableName="account"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="file_id" type="BIGINT">
+                <constraints foreignKeyName="fk_resume_file"
+                             referencedTableName="user_file"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+
+        <createTable tableName="resume_skill">
+            <column name="resume_id" type="BIGINT">
+                <constraints foreignKeyName="fk_resume_skill"
+                             referencedTableName="resume"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="skill_id" type="BIGINT">
+                <constraints foreignKeyName="fk_skill_resume"
+                             referencedTableName="skill"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="account_courses">
+            <column name="account_id" type="BIGINT">
+                <constraints foreignKeyName="fk_account_course"
+                             referencedTableName="account"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="course_id" type="BIGINT">
+                <constraints foreignKeyName="fk_courses_account"
+                             referencedTableName="course"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="practice_work_files">
+            <column name="practice_work_id" type="BIGINT">
+                <constraints foreignKeyName="fk_practice_work_file"
+                             referencedTableName="practice_work"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="file_id" type="BIGINT">
+                <constraints foreignKeyName="fk_file_practice_work"
+                             referencedTableName="user_file"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="refresh_token">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_refresh_token"/>
+            </column>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="expiry_date" type="timestamp"/>
+            <column name="account_id" type="BIGINT">
+                <constraints foreignKeyName="fk_refresh_token_account"
+                             referencedTableName="account"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="create_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+            <column name="update_date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="NOW()"/>
+        </createTable>
+
+
+
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <include file="20220711_new_init_db.xml" relativeToChangelogFile="true"/>
+    <include file="20220714_move_columns.xml" relativeToChangelogFile="true"/>
+    <include file="20220716_edit_course.xml" relativeToChangelogFile="true"/>
+    <include file="20220717_edit_practice_work.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>
